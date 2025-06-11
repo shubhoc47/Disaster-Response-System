@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.ScrollPane?>
+
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.drs.IncidentDetailsController">
+   <top>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #f0f0f0; -fx-border-color: lightgrey; -fx-border-width: 0 0 1 0;">
+               <children>
+                  <Label fx:id="incidentIdLabel" text="Incident ID: N/A">
+                     <font><Font name="System Bold" size="18.0" /></font>
+                  </Label>
+                  <Label fx:id="incidentTypeLabel" text="Type: N/A">
+                     <font><Font size="14.0" /></font>
+                  </Label>
+                  <Label fx:id="incidentStatusLabel" text="Status: N/A">
+                     <font><Font name="System Bold" size="14.0" /></font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+               </padding>
+            </HBox>
+             <HBox alignment="CENTER_LEFT" prefHeight="40.0">
+                 <children>
+                     <Button fx:id="backToDashboardButton" mnemonicParsing="false" onAction="#handleBackToDashboard" text="Back to Dashboard">
+                         <HBox.margin>
+                             <Insets left="10.0" />
+                         </HBox.margin>
+                     </Button>
+                 </children>
+             </HBox>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <TabPane fx:id="detailsTabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Overview">
+               <content>
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+                     <content>
+                        <GridPane hgap="10.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                          </columnConstraints>
+                           <children>
+                              <Label text="Location:" GridPane.rowIndex="0" />
+                              <TextField fx:id="overviewLocationField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                              <Label text="Reported Time:" GridPane.rowIndex="1" />
+                              <TextField fx:id="overviewReportedTimeField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label text="Current Priority:" GridPane.rowIndex="2" />
+                              <TextField fx:id="overviewPriorityField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Reported By:" GridPane.rowIndex="3" />
+                              <TextField fx:id="overviewReportedByField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" /> <!-- Assuming this data exists or is added -->
+                              <Label text="Full Description:" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+                              <TextArea fx:id="overviewDescriptionArea" editable="false" prefHeight="100.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label text="Assessment Summary:" GridPane.rowIndex="5" GridPane.valignment="TOP"/>
+                              <TextArea fx:id="overviewAssessmentArea" editable="false" prefHeight="80.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+               </content>
+          </Tab>
+          <Tab text="Assigned Resources">
+               <content>
+                  <VBox spacing="10.0">
+                     <children>
+                        <Label text="Assigned Teams &amp; Units">
+                           <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                        <TableView fx:id="assignedResourcesTableView" VBox.vgrow="ALWAYS">
+                          <columns>
+                            <TableColumn fx:id="colResourceName" prefWidth="150.0" text="Name/Unit" />
+                            <TableColumn fx:id="colResourceType" prefWidth="120.0" text="Type" />
+                              <TableColumn fx:id="colResourceStatus" prefWidth="150.0" text="Status" />
+                              <TableColumn fx:id="colResourceContact" prefWidth="200.0" text="Contact Info" />
+                          </columns>
+                        
+                        </TableView>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Button fx:id="assignResourceButton" mnemonicParsing="false" onAction="#handleAssignResource" text="Assign New Resource" />
+                              <Button fx:id="updateResourceStatusButton" mnemonicParsing="false" onAction="#handleUpdateResourceStatus" text="Update Selected Status" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+          </Tab>
+          <Tab text="Communication Log">
+               <content>
+                  <VBox spacing="10.0">
+                     <children>
+                        <Label text="Log Entries">
+                           <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                        <TableView fx:id="communicationLogTableView" VBox.vgrow="ALWAYS">
+                           <columns>
+                              <TableColumn fx:id="colLogTimestamp" prefWidth="150.0" text="Timestamp" />
+                              <TableColumn fx:id="colLogEntry" prefWidth="450.0" text="Entry" />
+                              <TableColumn fx:id="colLogAuthor" prefWidth="120.0" text="Author" />
+                           </columns>
+                           
+                        </TableView>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <TextField fx:id="newLogEntryField" HBox.hgrow="ALWAYS" promptText="Enter new log entry..." />
+                              <Button fx:id="addLogEntryButton" mnemonicParsing="false" onAction="#handleAddLogEntry" text="Add Entry" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+          </Tab>
+          
+        </tabs>
+      </TabPane>
+   </center>
+   <right>
+      <VBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: lightgrey; -fx-border-width: 0 0 0 1;">
+         <children>
+            <Label text="Coordination Actions">
+               <font><Font name="System Bold" size="14.0" /></font>
+            </Label>
+            <Button fx:id="updateIncidentButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleUpdateIncident" text="Update Status/Priority" />
+            <Button fx:id="assignReassignButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleAssignResource" text="Assign/Reassign Resources" /> <!-- Links to same as above -->
+            <Button fx:id="requestExternalAidButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleRequestExternalAid" text="Request External Aid" />
+            <Button fx:id="generateSnippetButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleGenerateSnippet" text="Generate Report Snippet" />
+            <Separator prefWidth="200.0" />
+            <Button fx:id="closeIncidentButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCloseIncident" style="-fx-base: #dc3545;" text="Close Incident" textFill="WHITE" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </right>
+</BorderPane>

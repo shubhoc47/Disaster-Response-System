@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.drs.ReportDisasterFormController">
+   <content>
+      <VBox alignment="TOP_CENTER" spacing="15.0">
+         <children>
+            <Label text="New Disaster Report">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+
+            <GridPane hgap="10.0" vgap="10.0" maxWidth="750.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="180.0" />
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+              </columnConstraints>
+              
+               <children>
+                  <!-- Section 1: Core Information -->
+                  <Label text="Core Information" GridPane.columnSpan="2" GridPane.halignment="LEFT">
+                     <font><Font name="System Bold" size="14.0" /></font>
+                  </Label>
+                  <Label text="Disaster Type*:" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="disasterTypeComboBox" prefWidth="250.0" promptText="Select Type" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  
+                  <Label text="Reported Date &amp; Time*:" GridPane.rowIndex="2" /> 
+                  <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <DatePicker fx:id="reportDatePicker" prefWidth="150.0" promptText="Date" />
+                        <TextField fx:id="reportTimeField" prefWidth="100.0" promptText="HH:mm (24hr)" />
+                     </children>
+                  </HBox>
+                  <Separator GridPane.columnSpan="2" GridPane.rowIndex="3" />
+
+                  <!-- Section 2: Location Details -->
+                  <Label text="Location Details" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+                     <font><Font name="System Bold" size="14.0" /></font>
+                  </Label>
+                  <Label text="Address/Description*:" GridPane.rowIndex="5" />
+                  <TextField fx:id="addressField" promptText="e.g., 123 Main St or near City Park" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  
+                  <Label text="City/Area*:" GridPane.rowIndex="6" />
+                  <TextField fx:id="cityField" prefWidth="250.0" promptText="e.g., Springfield" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  
+                  <Label text="Coordinates (Optional):" GridPane.rowIndex="7" />
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                     <children>
+                        <TextField fx:id="latitudeField" prefWidth="120.0" promptText="Latitude" />
+                        <TextField fx:id="longitudeField" prefWidth="120.0" promptText="Longitude" />
+                        <Button fx:id="locateOnMapButton" mnemonicParsing="false" onAction="#handleLocateOnMap" text="Locate on Map" />
+                     </children>
+                  </HBox>
+                  <Separator GridPane.columnSpan="2" GridPane.rowIndex="8" />
+
+                  <!-- Section 3: Incident Description & Source -->
+                  <Label text="Incident Description &amp; Source" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="9"> <!-- CORRECTED -->
+                     <font><Font name="System Bold" size="14.0" /></font>
+                  </Label>
+                  <Label text="Description:" GridPane.halignment="RIGHT" GridPane.rowIndex="10" GridPane.valignment="TOP" />
+                  <TextArea fx:id="descriptionTextArea" prefHeight="70.0" prefRowCount="4" promptText="Describe the incident, observed conditions, affected areas..." wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                  
+                  <Label text="Source of Report:" GridPane.rowIndex="11" />
+                  <TextField fx:id="reportSourceField" promptText="e.g., Phone Call, Email Alert" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                  
+                  <Label text="Reported By (Name/Contact):" GridPane.rowIndex="12" />
+                  <TextField fx:id="reportedByField" promptText="e.g., John Doe - 555-1234" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                  <Separator GridPane.columnSpan="2" GridPane.rowIndex="13" />
+
+                  <!-- Section 4: Initial Assessment (Optional) -->
+                  <Label text="Initial Assessment (Optional)" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="14">
+                     <font><Font name="System Bold" size="14.0" /></font>
+                  </Label>
+                  <Label text="Initial Severity:" GridPane.rowIndex="15" />
+                  <ComboBox fx:id="initialSeverityComboBox" prefWidth="200.0" promptText="Select Severity" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                  
+                  <Label text="Est. People Affected:" GridPane.rowIndex="16" />
+                  <TextField fx:id="peopleAffectedField" prefWidth="100.0" promptText="e.g., 10" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                   <Separator GridPane.columnSpan="2" GridPane.rowIndex="17" />
+
+                  <!-- Section 5: Attachments (Placeholder) -->
+                   <Label text="Attachments" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="18">
+                       <font><Font name="System Bold" size="14.0" /></font>
+                   </Label>
+                   <Label text="Media (Photos, Videos):" GridPane.rowIndex="19"/>
+                   <Button fx:id="uploadFilesButton" mnemonicParsing="false" onAction="#handleUploadFiles" text="Upload Files (Placeholder)" GridPane.columnIndex="1" GridPane.rowIndex="19"/>
+
+               </children>
+            </GridPane>
+            
+            <Separator maxWidth="750.0" />
+
+            <HBox alignment="CENTER_RIGHT" maxWidth="750.0" spacing="10.0">
+               <children>
+                  <Button fx:id="submitReportButton" mnemonicParsing="false" onAction="#handleSubmitReport" prefHeight="35.0" prefWidth="120.0" style="-fx-base: #28a745;" text="Submit Report" textFill="WHITE">
+                      <font><Font name="System Bold" size="13.0" /></font>
+                  </Button>
+                  <Button fx:id="clearFormButton" mnemonicParsing="false" onAction="#handleClearForm" prefHeight="35.0" prefWidth="100.0" text="Clear Form" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancel" prefHeight="35.0" prefWidth="100.0" style="-fx-base: #6c757d;" text="Cancel" textFill="WHITE" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+      </VBox>
+   </content>
+</ScrollPane>
