@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
-        <action>
-            <actionName>run</actionName>
+    <action>
+        <actionName>run</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>javafx:run</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>debug</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>javafx:run@debug</goal>
+        </goals>
+        <properties>
+            <jpda.listen>true</jpda.listen>
+        </properties>
+    </action>
+    <action>
+        <actionName>profile</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>javafx:run@profile</goal>
+        </goals>
+    </action>
+    <action>
+            <actionName>run.single.main</actionName>
             <packagings>
-                <packaging>jar</packaging>
+                <packaging>*</packaging>
             </packagings>
             <goals>
                 <goal>javafx:run</goal>
-                
             </goals>
         </action>
-        <action>
-            <actionName>debug</actionName>
+    <action>
+            <actionName>CUSTOM-Run Server</actionName>
+            <displayName>Run Server</displayName>
             <goals>
-                <goal>clean</goal>
-                <goal>javafx:run@ide-debug</goal>
-            </goals>
-            <properties>
-                <jpda.listen>true</jpda.listen>
-            </properties>
-        </action>
-        <action>
-            <actionName>profile</actionName>
-            <goals>
-                <goal>clean</goal>
-                <goal>javafx:run@ide-profile</goal>
+                <goal>exec:java</goal>
+                <goal>-Dexec.mainClass="com.mycompany.drs.server.DRSServer"</goal>
             </goals>
         </action>
-        <action>
-            <actionName>CUSTOM-jlink</actionName>
-            <displayName>jlink</displayName>
-            <goals>
-                <goal>clean</goal>
-                <!-- compile not needed with javafx-maven-plugin v0.0.5 -->
-                <goal>compile</goal>
-                <goal>javafx:jlink</goal>
-            </goals>
-        </action>
-    </actions>
+</actions>

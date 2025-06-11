@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?> 
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.drs.client.DashboardController">
+   <top>
+      <VBox>
+         <children>
+            <MenuBar BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem fx:id="menuFileExit" mnemonicParsing="false" onAction="#handleMenuFileExit" text="Exit" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="View">
+                  <items>
+                    <MenuItem fx:id="menuViewRefresh" mnemonicParsing="false" onAction="#handleMenuViewRefresh" text="Refresh Data" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem fx:id="menuHelpAbout" mnemonicParsing="false" onAction="#handleMenuHelpAbout" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" spacing="10.0">
+               <children>
+                  <Label fx:id="loggedInUserLabel" text="Logged in as: User - Role: N/A" />
+                  <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" text="Logout" />
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <left>
+      <VBox prefWidth="220.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Actions">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="newReportButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleNewReport" text="New Disaster Report" />
+            <Button fx:id="viewAllReportsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllReports" text="View All Reports (Refresh)" />
+            <Button fx:id="generateSitRepButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleGenerateSitRep" text="Generate Situation Report" />
+            
+            <Button fx:id="manageUsersButton" text="Manage Users (Admin)"
+                    onAction="#handleManageUsers"
+                    maxWidth="1.7976931348623157E308"
+                    visible="false" managed="false" /> 
+            
+            <Separator prefWidth="200.0" />
+            <Label text="Filters">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            
+            <!-- PLACEMENT OF KEYWORD SEARCH -->
+            <Label text="Keyword Search:" />
+            <TextField fx:id="keywordSearchField" promptText="Search ID, Location..." maxWidth="1.7976931348623157E308">
+                <VBox.margin> <!-- CORRECTED PLACEMENT -->
+                    <Insets bottom="5.0" />
+                </VBox.margin>
+            </TextField>
+            
+            <Label text="Disaster Type:" />
+            <ComboBox fx:id="disasterTypeFilterComboBox" maxWidth="1.7976931348623157E308" promptText="All Types" />
+            <Label text="Priority:" />
+            <ComboBox fx:id="priorityFilterComboBox" maxWidth="1.7976931348623157E308" promptText="All Priorities" />
+            <Label text="Status:" />
+            <ComboBox fx:id="statusFilterComboBox" maxWidth="1.7976931348623157E308" promptText="All Statuses" />
+            <Button fx:id="applyFiltersButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleApplyFilters" text="Apply Filters" />
+            <Button fx:id="clearFiltersButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClearFilters" text="Clear Filters" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+      <VBox spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Active Incidents Overview">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <TableView fx:id="incidentsTableView" VBox.vgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
+                <TableColumn fx:id="colType" prefWidth="120.0" text="Type" />
+                <TableColumn fx:id="colLocation" prefWidth="250.0" text="Location" />
+                <TableColumn fx:id="colPriority" prefWidth="100.0" text="Priority" />
+                <TableColumn fx:id="colStatus" prefWidth="120.0" text="Status" />
+                <TableColumn fx:id="colReportedTime" prefWidth="150.0" text="Reported Time" />
+              </columns>
+            </TableView>
+            <HBox fx:id="paginationControls" alignment="CENTER" prefHeight="30.0" spacing="10.0" visible="false">
+                <Label text="Pagination (placeholder)"/>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </center>
+</BorderPane>
