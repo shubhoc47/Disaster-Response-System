@@ -24,11 +24,13 @@ public class ClientHandler implements Runnable {
     private final Socket clientSocket;
     private final UserService userService;
     private final ReportService reportService;
+    private final ResourceService resourceService; 
 
     public ClientHandler(Socket socket) {
         this.clientSocket = socket;
         this.userService = new UserService();
         this.reportService = new ReportService();
+        this.resourceService = new ResourceService();
     }
 
     @Override
@@ -59,6 +61,10 @@ public class ClientHandler implements Runnable {
 
                         case "GET_SITREP":
                             out.writeObject(reportService.getSituationReport());
+                            break;
+                        
+                        case "GET_ALL_MASTER_RESOURCES":
+                            out.writeObject(resourceService.getAllMasterResources());
                             break;
 
                         default:

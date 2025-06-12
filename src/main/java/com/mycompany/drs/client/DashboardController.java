@@ -243,6 +243,16 @@ public class DashboardController implements Initializable {
         loadInitialReports();
     }
     
+    // Add the handler method for the new button
+    @FXML
+    void handleViewResources(ActionEvent event) {
+        try {
+            App.setRoot("ResourceDashboard", "DRS - Resource Availability", 900, 600);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     @FXML
     void handleGenerateSitRep(ActionEvent event) {
         System.out.println("CLIENT: Generating Situation Report...");

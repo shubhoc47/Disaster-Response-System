@@ -1,7 +1,10 @@
+com\mycompany\drs\client\ResourceDashboardController.class
 com\mycompany\drs\server\ReportService.class
 com\mycompany\drs\client\App.class
 com\mycompany\drs\client\UserManagementController.class
+com\mycompany\drs\server\ResourceService.class
 com\mycompany\drs\server\ClientHandler.class
+com\mycompany\drs\shared\MasterResource.class
 com\mycompany\drs\client\WelcomeController.class
 com\mycompany\drs\shared\AssignedResource.class
 com\mycompany\drs\shared\LogEntry.class

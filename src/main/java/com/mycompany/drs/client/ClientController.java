@@ -11,6 +11,7 @@ package com.mycompany.drs.client;
 import com.mycompany.drs.shared.DisasterReport;
 import com.mycompany.drs.shared.LogEntry;
 import com.mycompany.drs.shared.AssignedResource;
+import com.mycompany.drs.shared.MasterResource;
 import com.mycompany.drs.shared.SituationReport;
 import com.mycompany.drs.shared.User;
 import java.io.IOException;
@@ -218,7 +219,20 @@ public class ClientController {
             return new ArrayList<>();
         }
     }
-
+    
+    @SuppressWarnings("unchecked")
+    public List<MasterResource> getAllMasterResources() {
+        try {
+            String[] request = {"GET_ALL_MASTER_RESOURCES"};
+            out.writeObject(request);
+            out.flush();
+            return (List<MasterResource>) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+    
     public boolean addUser(User user) {
         try {
             Object[] request = {"ADD_USER", user};

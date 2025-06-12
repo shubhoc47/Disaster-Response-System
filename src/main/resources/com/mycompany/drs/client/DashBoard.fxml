@@ -61,6 +61,7 @@
             </Label>
             <Button fx:id="newReportButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleNewReport" text="New Disaster Report" />
             <Button fx:id="viewAllReportsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleViewAllReports" text="View All Reports (Refresh)" />
+            <Button fx:id="viewResourcesButton" mnemonicParsing="false" onAction="#handleViewResources" text="View All Resources" maxWidth="1.7976931348623157E308" />
             <Button fx:id="generateSitRepButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleGenerateSitRep" text="Generate Situation Report" />
             
             <Button fx:id="manageUsersButton" text="Manage Users (Admin)"
