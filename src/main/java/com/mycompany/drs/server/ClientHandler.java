@@ -9,11 +9,16 @@ package com.mycompany.drs.server;
  * @author shubh
  */
 
-import com.mycompany.drs.shared.DisasterReport;
+
+import com.mycompany.drs.shared.*;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+
+import com.mycompany.drs.shared.LogEntry;
+
+import com.mycompany.drs.shared.DisasterReport;
 
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
@@ -34,58 +39,92 @@ public class ClientHandler implements Runnable {
             Object requestObject;
             while ((requestObject = in.readObject()) != null) {
 
-                // --- LOGIN ---
-                if (requestObject instanceof String[] request && "LOGIN".equals(request[0])) {
-                    System.out.println("SERVER: Processing LOGIN request for user " + request[1]);
-                    String[] response = userService.authenticate(request[1], request[2]);
-                    out.writeObject(response);
-                    out.flush();
+                // --- First, check for simple String[] array requests ---
+                if (requestObject instanceof String[] stringRequest) {
+                    String command = stringRequest[0];
+                    System.out.println("SERVER: Received String[] command: " + command);
+
+                    switch (command) {
+                        case "LOGIN":
+                            out.writeObject(userService.authenticate(stringRequest[1], stringRequest[2]));
+                            break;
+                        
+                        case "GET_ALL_REPORTS":
+                            out.writeObject(reportService.getAllReports());
+                            break;
+
+                        case "GET_ALL_USERS":
+                            out.writeObject(userService.getAllUsers());
+                            break;
+
+                        case "GET_SITREP":
+                            out.writeObject(reportService.getSituationReport());
+                            break;
+
+                        default:
+                            System.err.println("SERVER: Unknown String[] command received: " + command);
+                            break;
+                    }
                 }
+                // --- Second, check for more complex Object[] array requests ---
+                else if (requestObject instanceof Object[] objectRequest) {
+                    String command = (String) objectRequest[0];
+                    System.out.println("SERVER: Received Object[] command: " + command);
 
-                // --- GET ALL REPORTS ---
-                else if (requestObject instanceof String[] request && "GET_ALL_REPORTS".equals(request[0])) {
-                    System.out.println("SERVER: Processing GET_ALL_REPORTS request.");
-                    List<DisasterReport> reports = reportService.getAllReports();
-                    System.out.println("SERVER: Found " + reports.size() + " reports. Sending to client.");
-                    out.writeObject(reports);
-                    out.flush();
+                    switch (command) {
+                        case "GET_REPORT_BY_ID":
+                            out.writeObject(reportService.getReportById((Integer) objectRequest[1]));
+                            break;
+
+                        case "SUBMIT_REPORT":
+                            out.writeObject(reportService.addReport((DisasterReport) objectRequest[1]));
+                            break;
+
+                        case "ADD_LOG_ENTRY":
+                            out.writeObject(reportService.addLogEntry((Integer) objectRequest[1], (LogEntry) objectRequest[2]));
+                            break;
+
+                        case "UPDATE_INCIDENT_STATUS":
+                            out.writeObject(reportService.updateIncidentStatus((Integer) objectRequest[1], (String) objectRequest[2], (String) objectRequest[3]));
+                            break;
+
+                        case "ASSIGN_RESOURCE":
+                            out.writeObject(reportService.assignResource((Integer) objectRequest[1], (AssignedResource) objectRequest[2]));
+                            break;
+                            
+                        case "UPDATE_RESOURCE_STATUS":
+                            out.writeObject(reportService.updateResourceStatus((Integer) objectRequest[1], (Integer) objectRequest[2], (String) objectRequest[3]));
+                            break;
+                            
+                        case "GET_FILTERED_REPORTS":
+                            out.writeObject(reportService.getFilteredReports((String) objectRequest[1], (String) objectRequest[2], (String) objectRequest[3], (String) objectRequest[4]));
+                            break;
+
+                        // User Management Commands
+                        case "ADD_USER":
+                            out.writeObject(userService.addUser((User) objectRequest[1]));
+                            break;
+                            
+                        case "UPDATE_USER":
+                            out.writeObject(userService.updateUser((User) objectRequest[1]));
+                            break;
+                            
+                        case "DELETE_USER":
+                            out.writeObject(userService.deleteUser((Integer) objectRequest[1]));
+                            break;
+
+                        default:
+                            System.err.println("SERVER: Unknown Object[] command received: " + command);
+                            break;
+                    }
                 }
-
-                // --- GET REPORT BY ID ---
-                else if (requestObject instanceof Object[] request && "GET_REPORT_BY_ID".equals(request[0])) {
-                    System.out.println("SERVER: Processing GET_REPORT_BY_ID request.");
-                    int reportId = (Integer) request[1];
-                    DisasterReport report = reportService.getReportById(reportId);
-                    out.writeObject(report);
-                    out.flush();
-                }
-
-                // --- SUBMIT NEW REPORT ---
-                else if (requestObject instanceof Object[] request && "SUBMIT_REPORT".equals(request[0])) {
-                    System.out.println("SERVER: Processing SUBMIT_REPORT request.");
-                    DisasterReport newReport = (DisasterReport) request[1];
-                    DisasterReport submittedReport = reportService.addReport(newReport);
-                    out.writeObject(submittedReport);
-                    out.flush();
-                }
-                else if (requestObject instanceof Object[] request && "GET_FILTERED_REPORTS".equals(request[0])) {
-                    System.out.println("SERVER: Processing GET_FILTERED_REPORTS request.");
-                    String type = (String) request[1];
-                    String priority = (String) request[2];
-                    String status = (String) request[3];
-                    String keyword = (String) request[4];
-
-                    List<DisasterReport> reports = reportService.getFilteredReports(type, priority, status, keyword);
-
-                    System.out.println("SERVER: Found " + reports.size() + " filtered reports. Sending to client.");
-                    out.writeObject(reports);
-                    out.flush();
-                }
-
-                // --- UNKNOWN COMMAND ---
+                // --- Final catch-all for any other unexpected data type ---
                 else {
-                    System.out.println("SERVER: Received unknown command.");
+                    System.err.println("SERVER: Received object of unknown type from client: " + requestObject.getClass().getName());
                 }
+
+                // Flush the stream once after handling the command
+                out.flush();
             }
         } catch (Exception e) {
             System.out.println("SERVER: Client " + clientSocket.getInetAddress() + " disconnected or an error occurred.");

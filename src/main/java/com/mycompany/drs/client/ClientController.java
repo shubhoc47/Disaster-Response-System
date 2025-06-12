@@ -11,7 +11,8 @@ package com.mycompany.drs.client;
 import com.mycompany.drs.shared.DisasterReport;
 import com.mycompany.drs.shared.LogEntry;
 import com.mycompany.drs.shared.AssignedResource;
-
+import com.mycompany.drs.shared.SituationReport;
+import com.mycompany.drs.shared.User;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -145,7 +146,114 @@ public class ClientController {
             return null;
         }
     }
+    public boolean updateIncidentStatus(int reportId, String newStatus, String newPriority) {
+        try {
+            Object[] request = {"UPDATE_INCIDENT_STATUS", reportId, newStatus, newPriority};
+            out.writeObject(request);
+            out.flush();
+            return (Boolean) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean assignResource(int reportId, AssignedResource resource) {
+        try {
+            Object[] request = {"ASSIGN_RESOURCE", reportId, resource};
+            out.writeObject(request);
+            out.flush();
+            return (Boolean) in.readObject(); // Expecting true/false response
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     
+    public boolean updateResourceStatus(int resourceId, int reportId, String newStatus) {
+        try {
+            // Now sending three pieces of information
+            Object[] request = {"UPDATE_RESOURCE_STATUS", resourceId, reportId, newStatus};
+            out.writeObject(request);
+            out.flush();
+            return (Boolean) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean addLogEntry(int reportId, LogEntry newLog) {
+        try {
+            Object[] request = {"ADD_LOG_ENTRY", reportId, newLog};
+            out.writeObject(request);
+            out.flush();
+            // The server will send back true on success, false on failure
+            return (Boolean) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public SituationReport getSituationReport() {
+        try {
+            String[] request = {"GET_SITREP"};
+            out.writeObject(request);
+            out.flush();
+            return (SituationReport) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    @SuppressWarnings("unchecked")
+    public List<User> getAllUsers() {
+        try {
+            String[] request = {"GET_ALL_USERS"};
+            out.writeObject(request);
+            out.flush();
+            return (List<User>) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    public boolean addUser(User user) {
+        try {
+            Object[] request = {"ADD_USER", user};
+            out.writeObject(request);
+            out.flush();
+            return (Boolean) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateUser(User user) {
+        try {
+            Object[] request = {"UPDATE_USER", user};
+            out.writeObject(request);
+            out.flush();
+            return (Boolean) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteUser(int userId) {
+        try {
+            Object[] request = {"DELETE_USER", userId};
+            out.writeObject(request);
+            out.flush();
+            return (Boolean) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     // You would add more methods here to handle every other action:
     // - updateReportStatus(int reportId, String newStatus)
     // - addLogEntry(int reportId, LogEntry newLog)

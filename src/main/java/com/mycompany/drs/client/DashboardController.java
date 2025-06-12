@@ -25,6 +25,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import com.mycompany.drs.shared.SituationReport; // Add this import
+import java.time.format.DateTimeFormatter;     // Add this import
+import javafx.scene.layout.GridPane;            // Add this import
+import javafx.scene.layout.Priority; 
 
 public class DashboardController implements Initializable {
     // --- FXML Elements ---
@@ -195,16 +199,21 @@ public class DashboardController implements Initializable {
         handleMenuViewRefresh(event);
     }
     
-    @FXML
-    void handleGenerateSitRep(ActionEvent event) {
-        System.out.println("CLIENT: Generate Situation Report button clicked - Placeholder.");
-        showAlert(Alert.AlertType.INFORMATION, "Feature Placeholder", "Generate Situation Report feature is not yet implemented.");
-    }
+//    @FXML
+//    void handleGenerateSitRep(ActionEvent event) {
+//        System.out.println("CLIENT: Generate Situation Report button clicked - Placeholder.");
+//        showAlert(Alert.AlertType.INFORMATION, "Feature Placeholder", "Generate Situation Report feature is not yet implemented.");
+//    }
 
     @FXML
     void handleManageUsers(ActionEvent event) {
-        System.out.println("CLIENT: Manage Users button clicked (Admin Only Action).");
-        showAlert(Alert.AlertType.INFORMATION, "Admin Action", "This feature would allow administrators to manage user accounts.");
+        System.out.println("CLIENT: Navigating to User Management screen.");
+        try {
+            App.setRoot("UserManagement", "DRS - User Management", 800, 600);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Optionally show an alert here
+        }
     }
     
     @FXML
@@ -233,6 +242,75 @@ public class DashboardController implements Initializable {
         // Reload all reports from the server
         loadInitialReports();
     }
+    
+    @FXML
+    void handleGenerateSitRep(ActionEvent event) {
+        System.out.println("CLIENT: Generating Situation Report...");
+        SituationReport sitRep = clientController.getSituationReport();
+
+        if (sitRep == null) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not generate the situation report from the server.");
+            return;
+        }
+
+        // --- Build the Content for the Dialog ---
+        StringBuilder content = new StringBuilder();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        content.append("Report Generated: ").append(sitRep.getGenerationTime().format(formatter)).append("\n\n");
+        content.append("--- OVERVIEW ---\n");
+        content.append("Total Active Incidents: ").append(sitRep.getTotalActiveIncidents()).append("\n\n");
+
+        content.append("Incidents by Status:\n");
+        sitRep.getIncidentsByStatus().forEach((status, count) -> 
+            content.append("\t- ").append(status).append(": ").append(count).append("\n")
+        );
+        content.append("\n");
+
+        content.append("Incidents by Priority:\n");
+        sitRep.getIncidentsByPriority().forEach((priority, count) -> 
+            content.append("\t- ").append(priority).append(": ").append(count).append("\n")
+        );
+        content.append("\n");
+
+        content.append("--- HIGH PRIORITY INCIDENTS ---\n");
+        if (sitRep.getHighPriorityIncidents().isEmpty()) {
+            content.append("None\n");
+        } else {
+            sitRep.getHighPriorityIncidents().forEach(report -> 
+                content.append(String.format("ID %d: %s at %s (%s)\n", 
+                    report.getId(), report.getType(), report.getLocationSummary(), report.getPriority()))
+            );
+        }
+
+        // --- Create and Show the Dialog ---
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("DRS Situation Report");
+        alert.setHeaderText("Current Operational Summary");
+
+        TextArea textArea = new TextArea(content.toString());
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        // Make the dialog resizable
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(textArea, Priority.ALWAYS);
+        GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+        GridPane expContent = new GridPane();
+        expContent.setMaxWidth(Double.MAX_VALUE);
+        expContent.add(textArea, 0, 0);
+
+        alert.getDialogPane().setContent(expContent);
+        alert.setResizable(true);
+        alert.getDialogPane().setPrefSize(600, 400); // Set a good default size
+
+        alert.showAndWait();
+    }
+    
+    // In DashboardController.java
+
+    
     
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

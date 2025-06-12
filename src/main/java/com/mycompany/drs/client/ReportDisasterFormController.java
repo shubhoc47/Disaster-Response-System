@@ -72,7 +72,7 @@ public class ReportDisasterFormController implements Initializable {
         }
 
         // --- 2. Create DisasterReport Object ---
-        String location = addressField + ", " + cityField.getText().trim();
+        String location = addressField.getText().trim() + ", " + cityField.getText().trim();
         String priority = initialSeverityComboBox.getValue() != null ? initialSeverityComboBox.getValue() : "Low";
         LocalDateTime reportedDateTime = LocalDateTime.of(date, time);
 
