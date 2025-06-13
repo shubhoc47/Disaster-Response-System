@@ -59,7 +59,7 @@ public class LoginController implements Initializable {
             return;
         }
 
-        // Use the ClientController to send the login request to the server
+        // Use the ClientController to send the login request to the server.
         boolean isAuthenticated = clientController.login(username, password);
 
         if (isAuthenticated) {
