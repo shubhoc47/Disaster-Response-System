@@ -124,14 +124,12 @@ You can use the following credentials (defined in `data.sql`) to test different 
 *This section can optionally embed the diagrams for easy viewing.*
 
 ### Use Case Diagram
-![Use Case Diagram for DRS](docs/use_case_diagram.png)
+![Use Case Diagram for DRS](diagrams/use_case_diagram.png)
 
 ### System Architecture (Class Diagrams)
 **Server-Side**
-![Server-Side Class Diagram](docs/server_class_diagram.png)
+![Server-Side Class Diagram](diagrams/server_side_architecture.png)
 
 **Client-Side**
-![Client-Side Class Diagram](docs/client_class_diagram.png)
+![Client-Side Class Diagram](diagrams/client_side _architecture.png)
 
-### Database Schema (ERD)
-![Entity-Relationship Diagram](docs/database_erd.png)
