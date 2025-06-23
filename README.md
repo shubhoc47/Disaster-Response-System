@@ -131,5 +131,5 @@ You can use the following credentials (defined in `data.sql`) to test different 
 ![Server-Side Class Diagram](diagrams/server_side_architecture.png)
 
 **Client-Side**
-![Client-Side Class Diagram](diagrams/client_side _architecture.png)
+![Client-Side Class Diagram](diagrams/client_side_architecture.png)
 
